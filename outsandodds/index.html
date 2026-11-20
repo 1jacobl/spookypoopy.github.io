@@ -188,6 +188,12 @@ a.btn{text-decoration:none; display:inline-block}
 .tabs{overflow-x:auto; scrollbar-width:none}
 .tabs button{white-space:nowrap}
 
+/* before you play */
+.warn-list{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:10px; max-width:64ch}
+.caution{border:1.5px solid var(--warn); background:var(--warn-soft); border-radius:4px; padding:16px 18px; display:flex; flex-direction:column; gap:8px}
+.caution b{font-family:var(--f-head); font-stretch:110%; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warn)}
+.faq details a{color:var(--ink); text-underline-offset:3px}
+
 /* ---------- motion ---------- */
 :root{ --ease-out:cubic-bezier(.16,1,.3,1); --ease-spring:cubic-bezier(.34,1.56,.64,1) }
 .cards{perspective:800px}
@@ -673,6 +679,34 @@ td{text-align:right; padding:8px 0; border-bottom:1px solid var(--line-2); font-
 
   L.push({id:'practice', title:'Practice', render(el){ practice(el); }});
   L.push({id:'simulator', title:'Simulator', render(el){ simulator(el); }});
+  L.push({id:'before-you-play', title:'Before you play', render(el){
+    el.append(
+      h(`<p class="lead">The math in this course is sound, but a real table adds things a lesson can't. Read this before you put money behind it.</p>`),
+      h(`<div class="stack"><h3>Do casinos use more decks?</h3>
+        <p>Not for poker. Every hand of Hold'em, live or online, is dealt from a single 52-card deck that's reshuffled before the next hand. Many card rooms rotate two decks with different coloured backs so one can be shuffled while the other is in play, but only one is ever used for a hand. That's why the course counts 47 unseen cards on the flop and 46 on the turn.</p>
+        <p>Blackjack is different. Casinos deal it from a shoe of several decks and play through most of the shoe before reshuffling. That's what makes blackjack card counting possible, and it's why more decks make it harder. None of that carries over to poker.</p></div>`),
+      h(`<div class="tbl"><table><thead><tr><th>Game</th><th>Decks per hand</th><th>Reshuffled</th><th>Does tracking past cards help?</th></tr></thead><tbody>
+        <tr><td>Hold'em, live</td><td>1</td><td>Every hand</td><td>No. Count outs instead.</td></tr>
+        <tr><td>Hold'em, online</td><td>1</td><td>Every hand</td><td>No. Count outs instead.</td></tr>
+        <tr><td>Blackjack, casino</td><td>Usually 6 to 8</td><td>When the cut card comes out</td><td>Yes, in theory</td></tr>
+      </tbody></table></div>`),
+      h(`<div class="stack"><h3>What about cards you can't see?</h3>
+        <p>Your opponents' cards, the burn cards and folded hands are all out of the deck, but you don't know what they are. Unknown cards don't change your odds: an out is as likely to be sitting in someone's folded hand as anywhere else, so you still count from the 47 or 46 cards you haven't seen.</p></div>`),
+      h(`<div class="stack"><h3>Where the numbers can mislead you</h3>
+        <ul class="warn-list">
+          <li><strong>Dirty outs.</strong> An out only counts if it wins. If your flush card also pairs the board when your opponent has a set, they make a full house and you lose.</li>
+          <li><strong>You might already be drawing dead.</strong> If your opponent holds a bigger flush draw or a hand that beats yours, some or all of your outs are worthless.</li>
+          <li><strong>The rule of 4 needs both cards.</strong> It only applies when you'll see the turn and river for one price, usually because someone is all in. Facing a flop bet with more betting to come, use × 2.</li>
+          <li><strong>This course leaves out implied odds.</strong> Real players also think about money they could win on later streets. That can justify some calls that pot odds alone say are folds, and it's a skill that comes after this one.</li>
+          <li><strong>Short-term results lie.</strong> A correct call loses often. A 35% draw misses almost two times in three. Judge your decisions, not the last hand.</li>
+        </ul></div>`),
+      h(`<div class="stack"><h3>At the table</h3>
+        <p>Use this to practise away from the game. Most card rooms don't allow phones or other devices to be used during a hand, and most online poker sites ban software that gives advice while you play. Breaking those rules can get you removed or your account closed.</p></div>`),
+      h(`<div class="caution"><b>Gambling involves real risk</b>
+        <p>Knowing the odds makes you a better player. It doesn't guarantee you'll win, and over a short stretch luck can beat skill. Only play with money you can afford to lose, check the legal age where you live (usually 18 or 21), and set a limit before you sit down.</p>
+        <p>If gambling stops being fun, help is free and confidential. In the US, call or text <strong class="n">1-800-GAMBLER</strong>. Elsewhere, search for your country's gambling helpline.</p></div>`)
+    );
+  }});
 
   /* ---------------- runout simulator ---------------- */
   function simulator(el){
@@ -922,10 +956,11 @@ td{text-align:right; padding:8px 0; border-bottom:1px solid var(--line-2); font-
         </ol>
         <p class="method-v">18% is less than 25%, so if the bet comes on the turn, this is a fold. You'll learn to run these three steps in a few seconds.</p>
       </div>`),
-      h(`<div class="stack"><h3>What's inside</h3><ol class="home-list">${lessonsHTML}<li><a href="#practice"><span class="no">→</span><span><strong>Practice</strong><small>Random hands through all three steps, with your accuracy and streak tracked.</small></span></a></li><li><a href="#simulator"><span class="no">→</span><span><strong>Simulator</strong><small>Deal the turn and river thousands of times and watch the hit rate settle on the exact odds.</small></span></a></li></ol></div>`),
+      h(`<div class="stack"><h3>What's inside</h3><ol class="home-list">${lessonsHTML}<li><a href="#practice"><span class="no">→</span><span><strong>Practice</strong><small>Random hands through all three steps, with your accuracy and streak tracked.</small></span></a></li><li><a href="#simulator"><span class="no">→</span><span><strong>Simulator</strong><small>Deal the turn and river thousands of times and watch the hit rate settle on the exact odds.</small></span></a></li><li><a href="#before-you-play"><span class="no">!</span><span><strong>Before you play</strong><small>Casino decks, dirty outs, table rules and playing responsibly.</small></span></a></li></ol></div>`),
       h(`<div class="faq">
         <h3>Questions</h3>
-        <details><summary>Is this card counting?</summary><p>Not quite. Card counting is a blackjack technique for tracking which cards have left a shoe. Poker is dealt from a fresh deck every hand, so the useful kind of counting is counting outs: the cards still in the deck that would make your hand.</p></details>
+        <details><summary>Is this card counting?</summary><p>Not quite. Card counting is a blackjack technique for tracking which cards have left a shoe of several decks. Poker is dealt from one fresh deck every hand, so the useful kind of counting is counting outs: the cards still in the deck that would make your hand.</p></details>
+        <details><summary>Do casinos use more decks for poker?</summary><p>No. Each hand uses one 52-card deck, reshuffled before the next hand, so the odds here hold at a real table. <a href="#before-you-play">Before you play</a> covers this and the other caveats.</p></details>
         <details><summary>Do I need to know poker already?</summary><p>You should know the hand rankings and how a hand of Hold'em is dealt (two hole cards, then the flop, turn and river). Everything else is explained as you go.</p></details>
         <details><summary>How accurate are the numbers?</summary><p>The exact percentages are computed from the cards you can't see: 47 on the flop and 46 on the turn. They assume every out wins, which the course points out where it matters.</p></details>
         <details><summary>Does it save my progress?</summary><p>Yes, in this browser only. Finished lessons get a tick in the contents and your practice stats stay until you reset them.</p></details>
@@ -943,7 +978,7 @@ td{text-align:right; padding:8px 0; border-bottom:1px solid var(--line-2); font-
       drawToc('home');
     } else {
       const i = idx, l = L[i];
-      main.append(h(`<p class="kicker">${l.id === 'practice' ? 'Drill' : l.id === 'simulator' ? 'Tool' : `Lesson ${i+1} of ${LESSONS}`}</p>`), h(`<h2>${l.title}</h2>`));
+      main.append(h(`<p class="kicker">${l.id === 'practice' ? 'Drill' : l.id === 'simulator' ? 'Tool' : l.id === 'before-you-play' ? 'Read this' : `Lesson ${i+1} of ${LESSONS}`}</p>`), h(`<h2>${l.title}</h2>`));
       l.render(main);
       const prev = i > 0 ? L[i-1] : {id:'home', title:'Introduction'}, next = L[i+1];
       main.append(h(`<nav class="pager" aria-label="Lesson navigation">
